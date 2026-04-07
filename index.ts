@@ -2,6 +2,7 @@ import "dotenv/config";
 import { Bot, InputFile } from "grammy";
 import { parsePrayerTimes, generateWallpaper } from "./wallpaper.js";
 import { saveChatId } from "./src/state.js";
+import { scheduleWeeklyReminder } from "./src/reminder.js";
 
 const token = process.env.BOT_TOKEN;
 if (!token) {
@@ -50,3 +51,6 @@ bot.catch(console.error);
 
 bot.start();
 console.log("Bot running...");
+
+scheduleWeeklyReminder(bot);
+console.log("Weekly reminder scheduled (Fridays 09:00)");
