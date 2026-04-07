@@ -1,6 +1,8 @@
 import { readFileSync, writeFileSync, existsSync } from "fs";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
 
-const STATE_PATH = "state.json";
+const STATE_PATH = join(dirname(fileURLToPath(import.meta.url)), "..", "state.json");
 
 interface State {
   chatId: number;

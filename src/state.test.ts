@@ -1,8 +1,10 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { readFileSync, existsSync, unlinkSync } from "fs";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
 import { saveChatId, loadChatId } from "./state.js";
 
-const STATE_PATH = "state.json";
+const STATE_PATH = join(dirname(fileURLToPath(import.meta.url)), "..", "state.json");
 
 beforeEach(() => {
   if (existsSync(STATE_PATH)) unlinkSync(STATE_PATH);
