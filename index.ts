@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { Bot, InputFile } from "grammy";
 import { parsePrayerTimes, generateWallpaper } from "./wallpaper.js";
+import { saveChatId } from "./src/state.js";
 
 const token = process.env.BOT_TOKEN;
 if (!token) {
@@ -10,12 +11,13 @@ if (!token) {
 
 const bot = new Bot(token);
 
-bot.command("start", (ctx) =>
-  ctx.reply(
+bot.command("start", (ctx) => {
+  saveChatId(ctx.chat.id);
+  return ctx.reply(
     "Ассалому алайкум 🕌\n\n" +
     "Намоз вақтларини юборинг — сизга iPhone 15 учун чиройли wallpaper тайёрлайман."
-  )
-);
+  );
+});
 
 bot.on("message:text", async (ctx) => {
   const text = ctx.message.text;
