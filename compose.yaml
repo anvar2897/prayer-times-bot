@@ -3,6 +3,6 @@ services:
     build: .
     container_name: prayer-times-bot
     environment:
-      - BOT_TOKEN=${8638738017:AAHoqbYvhm8JjQTT0JLJ7g7gqG5mIWrbttQ}
-      - UNSPLASH_ACCESS_KEY=${vh6Go_8Gwz315KTJBOQWsz6qrSY7eZNE1UUJd453__Q}
+      - BOT_TOKEN=${BOT_TOKEN}
+      - UNSPLASH_ACCESS_KEY=${UNSPLASH_ACCESS_KEY}
     restart: unless-stopped
