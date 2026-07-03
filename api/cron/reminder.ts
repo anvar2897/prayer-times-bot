@@ -4,7 +4,8 @@ import { loadChatId } from "../../src/kv.js";
 import { buildReminderMessage } from "../../src/reminder.js";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (req.headers.authorization !== `Bearer ${process.env.CRON_SECRET}`) {
+  const secret = process.env.CRON_SECRET;
+  if (!secret || req.headers.authorization !== `Bearer ${secret}`) {
     return res.status(401).json({ error: "Unauthorized" });
   }
 
@@ -13,7 +14,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(500).json({ error: "BOT_TOKEN not set" });
   }
 
-  const chatId = await loadChatId();
+  let chatId: number | null;
+  try {
+    chatId = await loadChatId();
+  } catch (err) {
+    console.error("Failed to load chat id from Redis:", err);
+    return res.status(500).json({ error: "Failed to load chat id from Redis" });
+  }
   if (!chatId) {
     return res.status(200).json({ skipped: true, reason: "no chat id saved yet" });
   }
