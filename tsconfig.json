@@ -7,5 +7,7 @@
 "rootDir": "./",
 "strict": true,
 "esModuleInterop": true
-}
+},
+"include": ["index.ts", "wallpaper.ts", "src/**/*.ts"],
+"exclude": ["node_modules", "dist", "**/*.test.ts"]
 }
