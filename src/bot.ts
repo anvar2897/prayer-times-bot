@@ -1,6 +1,6 @@
 import { Bot, InputFile } from "grammy";
 import { parsePrayerTimes, generateWallpaper } from "../wallpaper.js";
-import { saveChatId } from "./kv.js";
+import { saveChatId, savePrayerData } from "./kv.js";
 
 export function createBot(token: string): Bot {
   const bot = new Bot(token);
@@ -40,6 +40,14 @@ export function createBot(token: string): Bot {
         new InputFile(imageBuffer, "prayer_times.png"),
         { caption: "🕌 Weekly prayer times" }
       );
+
+      try {
+        // Persist the latest times so /api/wallpaper/latest can serve
+        // the current wallpaper to the iPhone Shortcuts automation.
+        await savePrayerData({ range, prayers });
+      } catch (err) {
+        console.error("Failed to save prayer data:", err);
+      }
     } catch (err) {
       console.error(err);
       await ctx.reply("Wallpaper яратишда хатолик юз берди.");

@@ -1,6 +1,12 @@
 import { Redis } from "@upstash/redis";
 
 const CHAT_ID_KEY = "prayer-times-bot:chat-id";
+const PRAYER_DATA_KEY = "prayer-times-bot:latest-prayer-data";
+
+export interface PrayerData {
+  range: string | null;
+  prayers: { name: string; time: string }[];
+}
 
 function getRedis(): Redis {
   const url = process.env.UPSTASH_REDIS_REST_URL ?? process.env.KV_REST_API_URL;
@@ -21,5 +27,14 @@ export async function saveChatId(chatId: number): Promise<void> {
 
 export async function loadChatId(): Promise<number | null> {
   const value = await getRedis().get<number>(CHAT_ID_KEY);
+  return value ?? null;
+}
+
+export async function savePrayerData(data: PrayerData): Promise<void> {
+  await getRedis().set(PRAYER_DATA_KEY, data);
+}
+
+export async function loadPrayerData(): Promise<PrayerData | null> {
+  const value = await getRedis().get<PrayerData>(PRAYER_DATA_KEY);
   return value ?? null;
 }
