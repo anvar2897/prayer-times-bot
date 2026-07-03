@@ -6,7 +6,13 @@ export function createBot(token: string): Bot {
   const bot = new Bot(token);
 
   bot.command("start", async (ctx) => {
-    await saveChatId(ctx.chat.id);
+    try {
+      await saveChatId(ctx.chat.id);
+    } catch (err) {
+      // Reminder subscription is best-effort; the wallpaper flow must
+      // still work when Redis is unavailable or not configured.
+      console.error("Failed to save chat id:", err);
+    }
     return ctx.reply(
       "Ассалому алайкум 🕌\n\n" +
       "Намоз вақтларини юборинг — сизга iPhone 15 учун чиройли wallpaper тайёрлайман."
