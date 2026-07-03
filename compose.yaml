@@ -1,8 +1,0 @@
-services:
-  prayer-times-bot:
-    build: .
-    container_name: prayer-times-bot
-    environment:
-      - BOT_TOKEN=${BOT_TOKEN}
-      - UNSPLASH_ACCESS_KEY=${UNSPLASH_ACCESS_KEY}
-    restart: unless-stopped
